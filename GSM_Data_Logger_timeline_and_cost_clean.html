@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GSM Data Logger System – Timeline and Cost</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --teal: #009696;
+      --teal-dark: #007a7a;
+      --border: #cfd6dc;
+      --border-soft: #dde3ec;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 9.5pt;
+      color: var(--ink);
+      background: #f0f2f5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 297mm;
+      min-height: 210mm;
+      margin: 20px auto;
+      background: #fff;
+      padding: 14mm 12mm 14mm 12mm;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    }
+
+    /* ── HEADER ── */
+    .topbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #009696;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      gap: 14px;
+    }
+    .header-logo img{
+      height: 56px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+    }
+    .title{
+      text-align: right;
+      font-size: 12.5pt;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      max-width: 58%;
+    }
+    .title .title-line1,
+    .title .title-line2{
+      display: block;
+    }
+    .title .title-line2{
+      margin-top: 2px;
+    }
+
+    /* ── META BAR ── */
+    .meta{
+      display: flex;
+      gap: 0;
+      margin-bottom: 14px;
+      border: 1px solid #99d0d0;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #e6f5f5;
+    }
+    .meta > div{
+      flex: 1;
+      padding: 8px 14px;
+      border-right: 1px solid #99d0d0;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .meta > div:last-child { border-right: none; }
+    .meta .k{
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #007a7a;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .meta .v{
+      font-size: 9pt;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    /* ── TABLE ── */
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      table-layout: fixed;
+    }
+
+    /* Column widths (percent — fits page width, avoids horizontal scroll) */
+    col.c-item   { width: 3.2%; }
+    col.c-mile   { width: 11%; }
+    col.c-dur    { width: 4%; }
+    col.c-es     { width: 5%; }
+    col.c-ed     { width: 5%; }
+    col.c-gs     { width: 5%; }
+    col.c-gd     { width: 5%; }
+    col.c-gw     { width: 4%; }
+    col.c-resp   { width: 11%; }
+    col.c-hw     { width: 7.5%; }
+    col.c-sw     { width: 7.5%; }
+    col.c-hwm    { width: 10%; }
+    col.c-swm    { width: 10%; }
+    col.c-total  { width: 7.5%; }
+    th, td{
+      padding: 6px 5px;
+      border: 1px solid var(--border-soft);
+      vertical-align: top;
+      line-height: 1.35;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* ── TABLE HEADERS (match sample) ── */
+    thead tr.sample-row th{
+      background: #f2f2f2;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 7pt;
+      text-align: center;
+      vertical-align: middle;
+      padding: 7px 5px;
+      border: 1px solid var(--border);
+      text-transform: none;
+      line-height: 1.25;
+    }
+    thead tr.sample-row th.th-yellow{
+      background: #ffea00;
+      color: #1a1a1a;
+    }
+
+    tbody tr:nth-child(even) td { background: #f4fbfb; }
+    tbody tr:hover td { background: #e6f5f5; }
+    td.item-num{
+      text-align: center;
+      font-weight: 700;
+      color: #007a7a;
+      background: #e6f5f5 !important;
+    }
+    td.amt{ text-align: right; font-weight: 600; white-space: nowrap; }
+    td.total-amt{
+      text-align: right;
+      font-weight: 700;
+      color: #007a7a;
+      white-space: nowrap;
+      background: #e6f5f5 !important;
+    }
+    td.center{ text-align: center; }
+    td.out-of-scope{ color: #999; font-style: italic; text-align: center; font-size: 7pt; }
+    td.in-scope{ color: #1a7a1a; font-weight: 600; }
+    .milestone-name{ font-weight: 600; color: #1a1a1a; display:block; }
+    .milestone-sub{ color:#666; font-size: 7pt; display:block; margin-top: 2px; }
+
+    /* ── PAYMENT SCHEDULE ── */
+    .pay-title{
+      margin-top: 14px;
+      margin-bottom: 8px;
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #009696;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .pay-note{
+      margin-bottom: 10px;
+      font-size: 8pt;
+      color: #555;
+      line-height: 1.4;
+    }
+    table.pay{
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8pt;
+    }
+    table.pay th, table.pay td{
+      border: 1px solid #dde3ec;
+      padding: 6px 6px;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.35;
+    }
+    table.pay thead th{
+      background: #e6f5f5;
+      color: #007a7a;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 7.2pt;
+      letter-spacing: 0.25px;
+      text-align: left;
+    }
+    table.pay td.amt{ text-align: right; white-space: nowrap; font-weight: 700; }
+
+    /* ── CLIENT APPROVAL ── */
+    .approval{
+      margin-top: 18px;
+      border: 1px solid #99d0d0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .approval-head{
+      background: #009696;
+      color: #fff;
+      font-weight: 800;
+      padding: 8px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      font-size: 8pt;
+    }
+    .approval-body{
+      padding: 10px;
+      background: #fff;
+    }
+    .approval-note{
+      font-size: 8pt;
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .sig-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+    }
+    .sig-field{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sig-label{
+      font-size: 7.2pt;
+      color: #007a7a;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.25px;
+    }
+    .sig-line{
+      height: 22px;
+      border-bottom: 1px solid #cfd6dc;
+    }
+
+    tfoot td{
+      background: var(--teal) !important;
+      color: #fff;
+      font-weight: 700;
+      font-size: 8.5pt;
+      /* Extra bottom padding fixes PDF engines drawing text on the bottom border */
+      padding: 14px 12px 18px 12px;
+      border: 1px solid var(--teal-dark);
+      text-align: right;
+      vertical-align: middle;
+      line-height: 1.35;
+      min-height: 2.75em;
+    }
+    tfoot td.grand-total-amt{
+      padding-right: 14px;
+      padding-bottom: 20px;
+      white-space: nowrap;
+    }
+    tfoot td.grand-total-amt .grand-total-text{
+      display: block;
+      text-align: right;
+      padding: 6px 8px 4px 8px;
+      line-height: 1.2;
+    }
+    tfoot td.total-label{
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+
+    /* ── FOOTER ── */
+    .footer{
+      margin-top: 18px;
+      border-top: 3px solid #009696;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+    }
+    .signoff{ font-size: 9pt; line-height: 1.8; }
+    .signoff .name{ font-weight: 700; font-size: 10pt; color: #009696; margin-top: 4px; }
+    .signoff .title2{ color: #555; }
+    .signoff .company{ font-weight: 600; color: #1a1a1a; }
+    .doc-note{ font-size: 7.5pt; color:#888; text-align:right; line-height: 1.6; }
+
+    @page {
+      size: A4 landscape;
+      margin: 10mm 12mm;
+    }
+
+    @media print {
+      html, body {
+        background: #fff !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      body { background: white; }
+      .page { width: 100%; margin: 0; padding: 0; box-shadow: none; }
+      tfoot td{
+        padding: 16px 12px 22px 12px;
+      }
+      tfoot td.grand-total-amt{
+        padding-right: 16px;
+        padding-bottom: 24px;
+      }
+      tfoot td.grand-total-amt .grand-total-text{
+        padding: 8px 10px 6px 10px;
+      }
+      /* Give the total column a little more room in PDF/print */
+      col.c-mile { width: 10%; }
+      col.c-total { width: 8.5%; }
+      /* Keep footer totals row intact when possible */
+      tfoot, tfoot tr { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="header-logo">
+        <img src="gmatrix-logo.png" alt="G-Matrix Systems Logo" />
+      </div>
+      <div class="title">
+        <span class="title-line1">GSM Data Logger System</span>
+        <span class="title-line2">Timeline and Cost</span>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div>
+        <div class="k">ATTENTION</div>
+        <div class="v">RHYTHM POWER</div>
+      </div>
+      <div>
+        <div class="k">DATE</div>
+        <div class="v">9 April 2026</div>
+      </div>
+      <div>
+        <div class="k">PREPARED BY</div>
+        <div class="v">G‑Matrix Systems (Pty) Ltd</div>
+      </div>
+      <div>
+        <div class="k">DOCUMENT TYPE</div>
+        <div class="v">Project Timeline &amp; Cost Schedule</div>
+      </div>
+    </div>
+
+    <div>
+      <table aria-label="Project Timeline and Cost Schedule">
+        <colgroup>
+          <col class="c-item">
+          <col class="c-mile">
+          <col class="c-dur">
+          <col class="c-es">
+          <col class="c-ed">
+          <col class="c-gs">
+          <col class="c-gd">
+          <col class="c-gw">
+          <col class="c-resp">
+          <col class="c-hw">
+          <col class="c-sw">
+          <col class="c-hwm">
+          <col class="c-swm">
+          <col class="c-total">
+        </colgroup>
+        <thead>
+          <tr class="sample-row">
+            <th>Item</th>
+            <th>Milestone (Rhythm Power – Client GIC Schedule)</th>
+            <th>Duration (weeks)</th>
+            <th>Required Original Start</th>
+            <th>Required Original Due</th>
+            <th>GMS Start</th>
+            <th>GMS Completion target</th>
+            <th>G‑Matrix Systems Duration (weeks)</th>
+            <th>G‑Matrix Systems Responsibility</th>
+            <th class="th-yellow">HARDWARE</th>
+            <th class="th-yellow">SOFTWARE</th>
+            <th class="th-yellow">HARDWARE MILESTONES</th>
+            <th class="th-yellow">SOFTWARE MILESTONE</th>
+            <th class="th-yellow">Total Amount (ZAR)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Item 1 -->
+          <tr>
+            <td class="item-num">1</td>
+            <td><span class="milestone-name">Project kick-off and safety file clearance</span><span class="milestone-sub">(*Sub Contractor Support to Rhythm Power)</span></td>
+            <td class="center">4</td>
+            <td class="center">01-Apr-26</td>
+            <td class="center">30-Apr-26</td>
+            <td class="center">01-Apr-26</td>
+            <td class="center">30-Apr-26</td>
+            <td class="center"><strong>3</strong></td>
+            <td>Project kick-off + URS finalisation starts only (safety file = Client)</td>
+            <td class="amt">R226,110.00</td>
+            <td class="amt">R494,320.00</td>
+            <td>Contract signed, PO issued, procurement starts</td>
+            <td>Project kick-off + URS finalisation starts only (safety file = Client)</td>
+            <td class="total-amt">R720,430.00</td>
+          </tr>
+
+          <!-- Item 2 -->
+          <tr>
+            <td class="item-num">2</td>
+            <td><span class="milestone-name">Contractor's inspection of Employer's selected sites</span></td>
+            <td class="center">4</td>
+            <td class="center">04-May-26</td>
+            <td class="center">29-May-26</td>
+            <td class="center out-of-scope">—</td>
+            <td class="center out-of-scope">—</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="out-of-scope">OUT OF SCOPE<br/>(Client responsibility)</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 3 -->
+          <tr>
+            <td class="item-num">3</td>
+            <td><span class="milestone-name">Interim design of RTM system</span></td>
+            <td class="center">6</td>
+            <td class="center">01-Jun-26</td>
+            <td class="center">10-Jul-26</td>
+            <td class="center">20-Apr-26</td>
+            <td class="center">31-May-26</td>
+            <td class="center"><strong>6</strong></td>
+            <td class="in-scope">In Scope – Full interim design completed</td>
+            <td class="out-of-scope center">—</td>
+            <td class="amt">R494,320.00</td>
+            <td class="out-of-scope center">—</td>
+            <td>In Scope – Full interim design completed</td>
+            <td class="total-amt">R494,320.00</td>
+          </tr>
+
+          <!-- Item 4 -->
+          <tr>
+            <td class="item-num">4</td>
+            <td><span class="milestone-name">Employer's review of RTM system interim design</span></td>
+            <td class="center">4</td>
+            <td class="center">13-Jul-26</td>
+            <td class="center">07-Aug-26</td>
+            <td class="center">01-Jun-26</td>
+            <td class="center">30-Jun-26</td>
+            <td class="center"><strong>4</strong></td>
+            <td class="in-scope">In Scope – Review support</td>
+            <td class="amt">R226,110.00</td>
+            <td class="amt">R494,320.00</td>
+            <td>All materials received &amp; assembly begins</td>
+            <td class="out-of-scope center">—</td>
+            <td class="total-amt">R720,430.00</td>
+          </tr>
+
+          <!-- Item 5 -->
+          <tr>
+            <td class="item-num">5</td>
+            <td><span class="milestone-name">Final design of RTM system</span><span class="milestone-sub">Including installation, commissioning, operating and maintenance procedures and manuals</span></td>
+            <td class="center">4</td>
+            <td class="center">10-Aug-26</td>
+            <td class="center">04-Sep-26</td>
+            <td class="center">01-Jun-26</td>
+            <td class="center">31-Jul-26</td>
+            <td class="center"><strong>8</strong></td>
+            <td class="in-scope">In Scope – Full final design &amp; software handover</td>
+            <td class="out-of-scope center">—</td>
+            <td class="amt">R494,320.00</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="total-amt">R494,320.00</td>
+          </tr>
+
+          <!-- Item 6 -->
+          <tr>
+            <td class="item-num">6</td>
+            <td><span class="milestone-name">Employer's review of final design of RTM system</span><span class="milestone-sub">Including installation, commissioning, O&amp;M procedures and manuals</span></td>
+            <td class="center">4</td>
+            <td class="center">07-Sep-26</td>
+            <td class="center">02-Oct-26</td>
+            <td class="center">01-Jul-26</td>
+            <td class="center">02-Aug-26</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="in-scope">In Scope – Review support</td>
+            <td class="amt">R226,110.00</td>
+            <td class="out-of-scope center">—</td>
+            <td>All 26 units assembled &amp; fully tested</td>
+            <td class="out-of-scope center">—</td>
+            <td class="total-amt">R226,110.00</td>
+          </tr>
+
+          <!-- Item 7 -->
+          <tr>
+            <td class="item-num">7</td>
+            <td><span class="milestone-name">Contractor procures material and equipment</span></td>
+            <td class="center">8</td>
+            <td class="center">05-Oct-26</td>
+            <td class="center">27-Nov-26</td>
+            <td class="center">02-Aug-26</td>
+            <td class="center">15-Sep-26</td>
+            <td class="center"><strong>13</strong></td>
+            <td class="in-scope">In Scope – Full hardware manufacture, assembly &amp; supply (all 26 units ready)</td>
+            <td class="amt">R226,110.00</td>
+            <td class="out-of-scope center">—</td>
+            <td>Final documentation, packing &amp; hardware ready for handover</td>
+            <td class="out-of-scope center">—</td>
+            <td class="total-amt">R226,110.00</td>
+          </tr>
+
+          <!-- Item 8 -->
+          <tr>
+            <td class="item-num">8</td>
+            <td><span class="milestone-name">Acceptance testing of RTM system prototype at Contractor's premises</span></td>
+            <td class="center">7</td>
+            <td class="center">30-Nov-26</td>
+            <td class="center">15-Jan-27</td>
+            <td class="center">16-May-26</td>
+            <td class="center"><strong>30-Sep-26</strong></td>
+            <td class="center"><strong>2</strong></td>
+            <td class="in-scope">In Scope – Factory subsystem testing completed</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 9 -->
+          <tr>
+            <td class="item-num">9</td>
+            <td><span class="milestone-name">Submission of practical training proposal</span></td>
+            <td class="center">7</td>
+            <td class="center">30-Nov-26</td>
+            <td class="center">15-Jan-27</td>
+            <td class="center">01-May-26</td>
+            <td class="center">30-Oct-26</td>
+            <td class="center"><strong>Incl.</strong></td>
+            <td class="in-scope">In Scope – Training docs with software handover</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 10 -->
+          <tr>
+            <td class="item-num">10</td>
+            <td><span class="milestone-name">Supply, installation, commissioning, site acceptance testing &amp; practical training at 4 sites</span></td>
+            <td class="center">8</td>
+            <td class="center">18-Jan-27</td>
+            <td class="center">12-Mar-27</td>
+            <td class="center">After 30-Jun-26 handover</td>
+            <td class="center">Mar-27</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="out-of-scope">OUT OF SCOPE<br/>(Client responsibility)</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 10.1 -->
+          <tr>
+            <td class="item-num">10.1</td>
+            <td><span class="milestone-sub" style="color:var(--ink)">Site 1 &amp; 2</span></td>
+            <td class="center">4</td>
+            <td class="center">18-Jan-27</td>
+            <td class="center">12-Feb-27</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="out-of-scope">OUT OF SCOPE<br/>(Client responsibility)</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 10.2 -->
+          <tr>
+            <td class="item-num">10.2</td>
+            <td><span class="milestone-sub" style="color:var(--ink)">Site 3 &amp; 4</span></td>
+            <td class="center">4</td>
+            <td class="center">15-Feb-27</td>
+            <td class="center">12-Mar-27</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="out-of-scope">OUT OF SCOPE<br/>(Client responsibility)</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 11 -->
+          <tr>
+            <td class="item-num">11</td>
+            <td><span class="milestone-name">Theoretical training</span></td>
+            <td class="center">2</td>
+            <td class="center">15-Mar-27</td>
+            <td class="center">31-Mar-27</td>
+            <td class="center">After site handover</td>
+            <td class="center">Mar-27</td>
+            <td class="center"><strong>0</strong></td>
+            <td class="out-of-scope">OUT OF SCOPE<br/>(Client responsibility)</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+
+          <!-- Item 12 -->
+          <tr>
+            <td class="item-num">12</td>
+            <td><span class="milestone-name">Technical Support (as-and-when required)</span></td>
+            <td class="center">26</td>
+            <td class="center">01-Apr-27</td>
+            <td class="center">30-Sep-27</td>
+            <td class="center">01-Jul-26 onward</td>
+            <td class="center">30-Sep-27</td>
+            <td class="center"><strong>Incl.</strong></td>
+            <td class="in-scope">In Scope – 12-month warranty from 30-Jun-2026</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+            <td class="out-of-scope center">—</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="9" class="total-label">Grand Total (ZAR incl. VAT)</td>
+            <td colspan="2" class="center">—</td>
+            <td colspan="2" class="center">—</td>
+            <td class="amt grand-total-amt"><span class="grand-total-text">R2,881,720.00</span></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="pay-title">Payment Schedule</div>
+    <div class="pay-note">
+      Item 1 payment is due <strong>on placement of order</strong>. All other payments are due <strong>7 days after the deliverable is signed off</strong>.
+    </div>
+    <table class="pay" aria-label="Payment Schedule">
+      <colgroup>
+        <col style="width: 8%">
+        <col style="width: 42%">
+        <col style="width: 12%">
+        <col style="width: 19%">
+        <col style="width: 19%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Deliverable / Payment Milestone</th>
+          <th>Amount (ZAR)</th>
+          <th>Sign-off / Trigger Date</th>
+          <th>Payment Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center"><strong>1</strong></td>
+          <td>Placement of order (contract signed and PO issued)</td>
+          <td class="amt">R720,430.00</td>
+          <td>01-Apr-26</td>
+          <td><strong>01-Apr-26</strong> (on placement of order)</td>
+        </tr>
+        <tr>
+          <td class="center"><strong>3</strong></td>
+          <td>Full interim design completed</td>
+          <td class="amt">R494,320.00</td>
+          <td>31-May-26</td>
+          <td><strong>07-Jun-26</strong> (7 days after sign-off)</td>
+        </tr>
+        <tr>
+          <td class="center"><strong>4</strong></td>
+          <td>All materials received and assembly begins</td>
+          <td class="amt">R720,430.00</td>
+          <td>30-Jun-26</td>
+          <td><strong>07-Jul-26</strong> (7 days after sign-off)</td>
+        </tr>
+        <tr>
+          <td class="center"><strong>5</strong></td>
+          <td>Full final design and software handover</td>
+          <td class="amt">R494,320.00</td>
+          <td>31-Jul-26</td>
+          <td><strong>07-Aug-26</strong> (7 days after sign-off)</td>
+        </tr>
+        <tr>
+          <td class="center"><strong>6</strong></td>
+          <td>All 26 units assembled and fully tested</td>
+          <td class="amt">R226,110.00</td>
+          <td>02-Aug-26</td>
+          <td><strong>09-Aug-26</strong> (7 days after sign-off)</td>
+        </tr>
+        <tr>
+          <td class="center"><strong>7</strong></td>
+          <td>Final documentation, packing, and hardware ready for handover</td>
+          <td class="amt">R226,110.00</td>
+          <td>15-Sep-26</td>
+          <td><strong>22-Sep-26</strong> (7 days after sign-off)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="approval">
+      <div class="approval-head">Client Approval (Rhythm Power)</div>
+      <div class="approval-body">
+        <div class="approval-note">
+          I, the undersigned authorised representative of <strong>Rhythm Power</strong>, hereby confirm approval of this project timeline, cost schedule, and associated payment schedule.
+        </div>
+        <div class="sig-grid">
+          <div class="sig-field">
+            <div class="sig-label">Full Name</div>
+            <div class="sig-line"></div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-label">Title / Position</div>
+            <div class="sig-line"></div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-label">Signature</div>
+            <div class="sig-line"></div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-label">Date</div>
+            <div class="sig-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="signoff">
+        <div>Kind regards,</div>
+        <div class="name">Gary Gasson</div>
+        <div class="title2">Chief Executive Officer</div>
+        <div class="company">G‑Matrix Systems (Pty) Ltd</div>
+      </div>
+      <div class="doc-note">
+        Document: GSM Data Logger System – Timeline &amp; Cost Schedule<br/>
+        Prepared for: Rhythm Power &nbsp;|&nbsp; Date: 9 April 2026<br/>
+        &copy; G‑Matrix Systems (Pty) Ltd – Confidential
+      </div>
+    </div>
+  </div>
+</body>
+</html>
